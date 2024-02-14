@@ -1,0 +1,185 @@
+<!DOCTYPE html><html><head><title>Hit the duck pixeled 2D</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"1.png","version":83,"size":558,"properties":{"frames":11,"fps":27}},{"file":"2.png","version":3,"size":180,"properties":{"frames":1,"fps":5}},{"file":"icon.png","version":95,"size":266,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[{"file":"alone_by_the_river.mp3","version":1,"size":6021120,"properties":{}}]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+init=function()
+  //giocatore
+  x=0
+  y=0
+  //menu
+  menu=1
+  men_a=-250
+  men_b=-230
+  //nemico
+  c=2
+  a=-250
+  vel=random.nextInt(c)
+  b=random.nextInt(80)
+  //punteggio
+  p=0
+  pm=0
+  po=10
+  
+  //vite
+  lives=3
+  
+end
+
+update=function()
+  //menu
+  if menu==1 then
+    if touch.press then menu=0 end
+    men_a+=1
+    men_b+=1.2
+    if men_a>250 then men_a=-250 end
+    if men_b>300 then men_b=-300 end
+    
+  end
+  
+  
+  //comandi giocatore
+  x=touch.x
+  y=touch.y
+  if x<-150 then x=-150 end
+  if x>150 then x=150 end
+  if y<-90 then y=-90 end
+  if y>90 then y=90 end
+  if touch.release and a<x+20 and a>x-20 and b>y-20 and b<y+20 then vel=random.nextInt(c) if b>0 then b=random.nextInt(-80) else b=random.nextInt(80) end a=-150 p+=1 end
+  
+  //movimento nemico
+  a+=vel
+  if vel==0 then vel=1 end
+  if a>150 then vel=random.nextInt(c) if b>0 then b=random.nextInt(-80) else b=random.nextInt(80) end a=-150 lives-=1 end
+  
+  //punteggio
+  if p==po then po+=10 c+=1 end
+  if p>pm then pm=p end
+  
+  //vite
+  if lives<=0 then
+    lives=3
+    touch.x=0
+    touch.y=0
+    a=-150
+    b=random.nextInt(80)
+    vel=random.nextInt(c)
+    c=random.nextInt(2)
+    p=0
+    po=10
+    end
+  
+  
+end
+
+draw=function()
+  audio.playMusic("alone_by_the_river",0.30,1)
+  //menu
+  if menu==1 then
+    screen.clear("rgb(0,255,255)")
+    screen.drawSprite("1",men_a,60,40)
+    screen.drawSprite("1",men_b,-60,40)
+    screen.drawSprite("2",0,-15,100)
+    screen.drawText("Hit the Duck",0,40,50,"rgb(255,0,0)")
+    screen.drawText("press to play",0,-40,30,"rgb(255,170,0)")
+    
+  end
+  
+  //gioco
+  if menu==0 then
+    screen.clear("rgb(0,255,255)")
+    screen.drawSprite("1",a,b,30)
+    
+    
+    //mirino
+    screen.fillRect(x+200,y,360,300,"rgb(0,0,0)")
+    screen.fillRect(x-200,y,360,300,"rgb(0,0,0)")
+    screen.fillRect(x,y+250,1070,460,"rgb(0,0,0)")
+    screen.fillRect(x,y-250,1500,460,"rgb(0,0,0)")
+    screen.drawLine(x-25,y,x+25,y,"rgb(0,0,0)")
+    screen.drawLine(x,y-25,x,y+25,"rgb(0,0,0)")
+    screen.fillRect(x,y,2,2,"rgb(255,0,0)")
+    if touch.release then screen.fillRect(x,y,40,40,"rgb(255,255,0)") sleep(300) end
+   
+   
+    //punteggio
+    screen.drawText("score:",-150,-80,20,"rgb(225,225,225")
+    screen.drawText(p,-100,-80,20,"rgb(255,227,227)")
+    screen.drawText("record:",-150,-60,20)
+    screen.drawText(pm,-100,-60,20)
+    
+    //script vite
+    screen.drawText("lives:",100,-80,20)
+    screen.drawText(lives,150,-80,20)
+    
+    //game over
+    if lives<=0 then
+      screen.clear()
+      screen.drawText("Game Over",0,0,50,"rgb(225,0,0)")
+      
+      end
+    
+  end
+end
+end()
+
+
+</script></html>
