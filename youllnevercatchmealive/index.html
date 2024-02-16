@@ -1,0 +1,202 @@
+<!DOCTYPE html><html><head><title>you'll never catch me alive!</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":87,"size":774,"properties":{"frames":1,"fps":5}},{"file":"sprite.png","version":34,"size":366,"properties":{"frames":1,"fps":5}},{"file":"sprite2.png","version":4,"size":227,"properties":{"frames":1,"fps":5}},{"file":"sprite3.png","version":15,"size":241,"properties":{"frames":1,"fps":5}},{"file":"sprite4.png","version":6,"size":270,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+init = function()
+  x=1000
+  y=1000
+  a=50
+  b=0.2
+  c=1
+  d=0
+  e=1
+  p=0
+  o=10
+  f=0
+  g=1
+  h=0
+  i=1
+  j=0
+  k=1
+  l=-200
+  m=200
+  menu=1
+  t=1
+  s=0
+  pm=0
+end
+
+update = function()
+  if menu==1 then
+    l+=0.05
+    if l>250 then l=-250 end
+    m-=0.05
+    if m<=-250 then m=250 end
+    if touch.press then menu=0 end
+    end
+  if menu==0 then
+    if touch.press then
+  x=touch.x
+  y=touch.y
+  end
+   if p>pm then pm=p end
+   c+=b
+   if c>80 then c=1 a=random.nextInt(180) s=1 end
+   if x<a+c/2 and x>a-c/2 and y<c/2 and y>-c/2 then c=1 a=random.nextInt(180) p+=1 end
+ 
+   e+=b
+   if e>80 then d=random.nextInt(-180) e=1 s=1 end
+   if x<d+e/2 and x>d-e/2 and y<e/2 and y>-e/2 then e=1 d=random.nextInt(-180) p+=1 end
+  
+   //speed
+   if p==o and o>=60 then o+=10 b+=0.05 end
+  if p>=20 then
+   g+=b  
+   if g>80 then f=random.nextInt(-180) g=1 s=1 end
+   if x<f+g/2 and x>f-g/2 and y<g/2 and y>-g/2 then g=1 f=random.nextInt(180) p+=1 end
+  end
+ if p>=30 then
+   i+=b
+   if i>80 then i=1 h=random.nextInt(-180) s=1 end
+   if x<h+i/2 and x>h-i/2 and y<i/2 and y>-i/2 then i=1 h=random.nextInt(-180) p+=1 end
+ end
+ if p>=40 then
+   k+=b
+   if k>80 then k=1 j=random.nextInt(180) s=1 end
+   if x<j+k/2 and x>j-k/2 and y<k/2 and y>-k/2 then k=1 j=random.nextInt(180) p+=1 end
+ end
+ end
+end
+
+draw = function()
+  if menu==1 then
+     screen.fillRect(0,0,500,200,"rgb(8,70,70)")
+     screen.drawSprite("sprite2",l,80,90)
+     screen.drawSprite("sprite2",m,-80,90)
+     screen.drawText("You'll never catch me alive",0,0,30,"rgb(0,255,0)")
+     screen.drawSprite("sprite3",0,40,100)
+     screen.drawText("press to play",0,-50,20,"rgb(147,33,33)")
+    end
+  if menu==0 then
+    if t==1 then
+      screen.clear()
+      screen.drawText("press where you want to shoot",0,0,20,"rgb(225,225,225)")
+      sleep(2000)
+      t=0
+      end
+    screen.clear()
+    screen.fillRect(0,100,500,200,"rgb(0,70,70)")
+    screen.fillRect(0,-50,500,100,"rgb(35,105,0)")
+    screen.fillRect(0,-70,50,60,"rgb(197,175,175)")
+    screen.fillRect(80,-70,50,60,"rgb(197,175,175)")
+    screen.fillRect(160,-70,50,60,"rgb(197,175,175)")
+    screen.fillRect(-80,-70,50,60,"rgb(197,175,175)")
+    screen.fillRect(-160,-70,50,60,"rgb(197,175,175)")
+    screen.fillRect(0,-100,500,70,"rgb(147,130,130)")
+    screen.fillRect(x,y,10,10,"rgb(225,20,20)")
+    screen.drawSprite("sprite",a,0,c,c)
+    screen.drawSprite("sprite",d,0,e,e)
+    screen.drawText("score:",-150,82,20)
+    screen.drawText(p,-100,80,20)
+    screen.drawText("record:",-150,62,20)
+    screen.drawText(pm,-100,60,20)
+ if p>=20 then 
+   screen.drawSprite("sprite",f,0,g,g)
+ end
+  if p>=30 then 
+   screen.drawSprite("sprite",h,0,i,i)
+  end
+ if p>=40 then 
+   screen.drawSprite("sprite",j,0,k,k)
+
+ end
+     if s==1 then
+     screen.clear()
+     screen.drawText("game over",0,0,50,"rgb(225,0,0)")
+     sleep(3000)
+      x=1000
+      y=1000
+      a=50
+      b=0.2
+      c=1
+      d=0
+      e=1
+      p=0
+      o=10
+      f=0
+      g=1
+      h=0
+      i=1
+      j=0
+      k=1
+      l=-200
+      m=200
+      menu=1
+      t=1
+      s=0
+     end
+end
+end
+end()
+
+
+</script></html>
