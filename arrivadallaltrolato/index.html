@@ -1,0 +1,466 @@
+<!DOCTYPE html><html><head><title>arriva dall'altro lato</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"enemy.png","version":2,"size":193,"properties":{"frames":1,"fps":5}},{"file":"enemy2.png","version":5,"size":130,"properties":{"frames":1,"fps":5}},{"file":"enemy3.png","version":3,"size":112,"properties":{"frames":1,"fps":5}},{"file":"icon.png","version":10,"size":140,"properties":{"frames":1,"fps":5}},{"file":"player.png","version":4,"size":146,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+init = function()
+  //menù e livelli
+  menu=1
+  livello=0
+  selezioneLivello=1
+  x=0
+  y=90
+  //posizione giocatore
+  
+  a=touch.x
+  b=touch.y
+  
+  //eventuali
+  c=0
+  e=0
+  f=55
+  g=0
+  h=75
+  
+  //morti
+  morti=0
+end
+
+update = function()
+  //comandi
+  if selezioneLivello==0 and menu==0 then
+  if touch.touching==1 then
+  a=touch.x
+  b=touch.y
+  if x>200 or x<-200 then x=0 y=90 end
+  if y>100 or y<-100 then x=0 y=90 end
+  else
+    a=0
+    b=0
+  end
+  end
+  
+  if a<-135 and a>-165 and b>-45 and b<-15 or keyboard.W then if y<90 then y+=1 end end
+  if a<-135 and a>-165 and b<-75 and b>-105 or keyboard.S then if y>-90 then y-=1 end end
+  if a>-135 and a<-105 and b>-75 and b<-45 or keyboard.D then x+=1 end
+  if a>-195 and a<-165 and b>-75 and b<-45 or keyboard.A then x-=1 end  
+  
+  //menu
+  if menu==1 then
+    if touch.press then
+      menu=0
+      end
+  end
+  
+  //livelli
+  
+   //tutorial
+   if livello==0 then
+   if x<-45 or x>45 then x=0 y=90 morti+=1 end
+   if y<=-85 then livello=1 x=0 y=90 selezioneLivello=1 end
+   end
+   
+   //livello 1
+   if livello==1 then
+     if y<55 and y>-55 and x<105 and x>-105 then x=0 y=90 morti+=1 end
+     if y<-75 and y>-100 and x>-35 and x<35 then x=150 y=90 livello=2 selezioneLivello=1 end
+   end
+   
+   //livello 2
+   if livello==2 then
+     if y<100 and y>60 and x<105 and x>-200 then x=150 y=90 morti+=1 end
+     if y<30 and y>-30 and x<200 and x>-105 then x=150 y=90 morti+=1 end
+     if y>-100 and y<-60 and x<105 and x>-200 then x=150 y=90 morti+=1 end
+     if y<-58 and y>-100 and x>120 and x<180 then livello=3 selezioneLivello=1 x=150 y=50 end
+   end
+   
+   //livello 3
+   if livello==3 then
+     if y<10 and y>0 then y=90 x=150 end
+     if x<-142 and x>-158 and y>35 and y<75 then y=-50 x=140 end
+     if x>142 and x<158 and y<-35 and y>-75 then y=50 x=-140 morti+=1 end
+     if x<15 and x>-15 and y<-21 and y>-81 then livello=4 selezioneLivello=1 x=0 y=90 end
+   end
+   
+   //livello 4
+   if livello==4 then
+     if x<-70 or x>70 then x=0 y=90 morti+=1 end
+     if c==1 then 
+       if y<-40 and y>-60 then x=0 y=90  c=0 morti+=1 end
+       if y>80 and y<90 and x>-30 and x<30 then x=0 y=-80 end
+       if y>-70 and y<-60 then x=0 y=80 end
+       if y<-80 then livello=5 selezioneLivello=1 x=0 y=90 c=1 end
+       end
+      end
+     //livello 5
+     if livello==5 then
+       if x>85 and y<10 and x<115 and y>-20 then
+         c=0
+       end
+       if y<-80 then livello=6 selezioneLivello=1 x=-150 y=0 end
+     if y<-20 and y>-30 and x>54 then x=0 y=90 c=1 morti+=1 end
+     if y<-20 and y>-30 and x<-54 then x=0 y=90 c=1 morti+=1 end
+     if c==1 then
+      if y<-20 and y>-30 and x>-54 and x<54 then x=-150 y=0 c=1 morti+=1 end
+     end
+     end
+     //livello 6
+     if livello==6 then
+       if e>-50 then
+       e-=1
+       else 
+         e=50
+       end
+      if y>e-10 and y<e+10 and x>=-110 and x<=-90 then x=-150 y=0 morti+=1 end
+      if y>e-10 and y<e+10 and x>=-15 and x<=15 then x=-150 y=0 morti+=1 end
+      if y>e-10 and y<e+10 and x>=90 and x<=110 then x=-150 y=0 morti+=1 end
+      if x>200 then x=-150 y=0 morti+=1 end
+      if y>44 or y<-44 then x=-150 y=0 morti+=1 end
+      if x>190 then livello=7 selezioneLivello=1 e=120 x=-160 y=0 g=-120 end
+      
+       end
+    
+    //livello 7
+    if livello==7 then
+      if c==0 then
+        e+=1
+        g-=1
+        else
+          e-=1
+          g+=1
+      end
+      if e>=120 then
+        c=1
+      end
+      if e<=-120 then
+        c=0 
+      end
+      if y>75 or y<-75 then x=-160 y=0 morti+=1 end
+      if x<-120 and x>-195 and y<-15 or x<-120 and x>-195 and y>15 then x=-160 y=0 end
+      if x<-185 then x=-160 y=0  morti+=1 end 
+      if x>185 then x=-160 y=0  morti+=1 end
+       if x>120 and x<195 and y<-15 or x>120 and x<195 and y>15 then x=-160 y=0  morti+=1 end
+      if x>-56 and x<56 and y<56 and y>-56 then x=-160 y=0  morti+=1 end
+      if x<e+10 and x>e-10 and y<f+10 and y>f-10 then x=-160 y=0  morti+=1 end
+      if x<e+10 and x>e-10 and y<-f+10 and y>-f-10 then x=-160 y=0  morti+=1 end
+      if x<g+10 and x>g-10 and y<h+10 and y>h-10 then x=-160 y=0  morti+=1 end
+      if x<g+10 and x>g-10 and y<-h+10 and y>-h-10 then x=-160 y=0  morti+=1 end
+      if x>165 then livello=8 selezioneLivello=1 f=100 e=-100 c=0 x=-175 y=0  end
+    end
+    //livello 8
+    if livello==8 then
+      if c==0 then e-=1.5 f+=1.5 end
+      if e<-100 then c=1 end
+      if c==1 then e+=1.5 f-=1.5 end
+      if e>100 then c=0 end
+      if x>-125 and x<-15 and y<e+5 and y>e-5 then x=-175 y=0  morti+=1 end
+      if x>-15 and x<95 and y<f+5 and y>f-5 then x=-175 y=0  morti+=1 end
+      if x>95 and y<205 and y<e+5 and y>e-5 then x=-175 y=0  morti+=1 end
+      if x>190 then livello=9 selezioneLivello=1 x=0 y=0 e=0 f=0 c=0 g=0 end
+    end
+    
+    //livello 9
+    if livello==9 then
+      if g==0 then
+        e+=1.5
+        f-=1.5    
+      else
+        e-=1.5
+        f+=1.5
+      end
+        if e>100 then g=1 end
+        if e<-100 then g=0 end
+        if x<-35 and x>-65 and y>e-10 and y<e+10 then x=0 y=0 e=0 f=0 g=0 c=0  morti+=1 end
+        if x<-85 and x>-115 and y>f-10 and y<f+10 then x=0 y=0 e=0 f=0 g=0 c=0  morti+=1 end
+        if x<-135 and x>-165 and y>e-10 and y<e+10 then x=0 y=0 e=0 f=0 g=0 c=0  morti+=1 end
+        if x>-200 and x<-170 and y<15 and y>-15 then c=1 end
+        if x>140 and x<163 and y<90 and y>25 then x=0 y=0 e=0 f=0 g=0 c=0  morti+=1 end
+        if x>140 and x<163 and y>-90 and y<-25 then x=0 y=0 e=0 f=0 g=0 c=0  morti+=1 end
+        if c==0 and x>140 and x<160 and y<25 and y>-25 then x=0 y=0 e=0 f=0 g=0 c=0  morti+=1 end
+        if x>185 then livello=10 selezioneLivello=1 x=125 y=-70 e=0 f=-125 g=0 c=0  morti+=1 end
+    end
+    
+    //livello 10
+    if livello==10 then
+      if x>140 and y<75 then x=125 y=-70  morti+=1 end
+      if x<145 and x>-115 and y>-50 and y<-30 then x=125 y=-70 f=-125  morti+=1 end
+      if x<85 and x>-190 and y>30 and y<50 then x=125 y=-70 f=-125  morti+=1 end
+      if x<-170 then x=125 y=-70 f=-125  morti+=1 end
+      if y<-85 then x=125 y=-70 f=-125  morti+=1 end
+      f+=0.20
+      if y<f+15 and y>f-15 or y<f then x=125 y=-70 f=-125  morti+=1 end
+      if x>145 then livello=11 end
+      if f>150 then f=-125 end
+      
+      
+      
+      end
+    
+end
+
+draw = function()
+  //menu
+  if menu==1 then
+    screen.clear("rgb(225,225,225")
+    screen.drawText("get to the green",0,40,50,"rgb(0,197,0)")
+    screen.drawText("press to play",0,-20,30,"rgb(255,0,0)")
+  end
+  
+  //livelli
+  if menu==0 and selezioneLivello==1 then
+    screen.clear()
+    screen.drawText("Level:",-70,10,40,"rgb(225,225,225)")
+    if livello==0 then
+      screen.drawText("tutorial",60,10,40,"rgb(66,197,0)")
+      end
+    if livello >0 then
+    screen.drawText(livello,40,8,40,"rgb(225,225,225)")
+    end
+    sleep(2000)
+    selezioneLivello=0
+end
+
+
+//tutorial
+if menu==0 and selezioneLivello==0 then
+  screen.clear("rgb(255,255,255)")
+  screen.fillRect(150,0,200,200,"rgb(166,166,166)")
+  screen.fillRect(-150,0,200,200,"rgb(166,166,166)")
+  screen.fillRect(0,-100,100,30"rgb(0,255,0)")
+  screen.drawSprite("player",x,y,20)
+  screen.drawText("touch the green",140,20,20,"rgb(0,0,0)")
+  screen.drawText("using the joystick",141,0,20,"rgb(0,0,0)")
+  screen.drawText("don't touch the walls",140,-20,20,"rgb(0,0,0)")
+end
+
+//livello 1
+if livello==1 and selezioneLivello==0 then
+  screen.clear("rgb(225,225,225)")
+  screen.fillRect(0,0,200,100,"rgb(79,79,79)")
+  screen.drawSprite("player",x,y,20,20)
+  screen.fillRect(0,-90,60,30,"rgb(0,255,0)")
+  
+end
+
+//livello 2
+if livello==2 then
+  screen.clear("rgb(225,225,225)")
+  screen.fillRect(-150,90,500,50,"rgb(79,79,79)")
+  screen.fillRect(150,0,500,50,"rgb(79,79,79)")
+  screen.fillRect(-150,-90,500,50,"rgb(79,79,79)")
+  screen.fillRect(150,-90,50,50,"rgb(0,255,85)")
+  screen.drawSprite("player",x,y,20,20)
+  
+end
+
+//livello 3
+if livello==3 then
+  screen.clear("rgb(225,225,225)")
+  screen.fillRect(0,0,900,10,"rgb(118,118,118)")
+  screen.fillRect(-150,50,5,40,"rgb(255,0,170)")
+  screen.fillRect(150,-50,5,40,"rgb(255,0,170)")
+  screen.fillRect(-0,-50,20,50,"rgb(0,255,0)")
+  screen.drawText("this is a portal",-150,20,20,"rgb(0,0,0)")
+  screen.drawSprite("player",x,y,20,20)
+end
+
+//livello 4
+if livello==4 then
+  screen.clear("rgb(225,225,225)")
+  screen.fillRect(-175,0,200,500,"rgb(118,118,118)")
+  screen.fillRect(175,0,200,500,"rgb(118,118,118)")
+  screen.fillRect(0,-90,150,20,"rgb(0,255,0)")
+  if y<0 then
+    screen.fillRect(0,-50,150,10,"rgb(2,0,0)")
+    c=1
+  end
+  if c==1 then
+    screen.fillRect(0,90,50,10,"rgb(255,0,170)")
+    screen.fillRect(0,-60,50,10,"rgb(225,0,170)")
+    screen.fillRect(0,-50,150,10,"rgb(2,0,0)")
+    end
+  screen.drawSprite("player",x,y,20,20)
+  end
+
+//livello 5
+if livello==5 then
+  screen.clear("rgb(225,225,225)")
+  screen.fillRect(300,-40,500,10,"rgb(0,0,0)")
+  screen.fillRect(-300,-40,500,10,"rgb(0,0,0)")
+  if c==1 then
+  screen.fillRect(0,-40,100,10,"rgb(70,47,0)")
+  screen.fillRect(100,0,20,20,"rgb(255,255,0)")
+  screen.drawText("This is a door",0,0,20,"rgb(0,0,0)")
+  screen.drawText("This is a key",100,30,20,"rgb(0,0,0)")
+  end
+  screen.fillRect(0,-100,500,20,"rgb(0,255,0)")
+  screen.drawSprite("player",x,y,20,20)
+end
+
+//livello 6
+if livello==6 then
+  screen.clear("rgb(225,225,225)")
+  screen.fillRect(0,100,500,100,"rgb(118,118,118)")
+  screen.fillRect(0,-100,500,100,"rgb(118,118,118)")
+  screen.drawText("these are enemies",0,0,20,"rgb(0,0,0)")
+  screen.drawSprite("enemy",-100,e,30,30)
+  screen.drawSprite("enemy",0,e,30,30)
+  screen.drawSprite("enemy",100,e,30,30)
+  screen.fillRect(220,0,70,100,"rgb(0,255,85)")
+  screen.drawSprite("player",x,y,20,20)
+  end
+//livello 7
+if livello==7 then
+screen.clear("rgb(255,225,225)")
+screen.fillRect(0,0,100,100,"rgb(118,118,118)")
+screen.drawLine(125,-80,-125,-80)
+screen.drawLine(125,80,-125,80)
+screen.drawLine(-125,-80,-125,-20)
+screen.drawLine(-125,20,-125,80)
+screen.drawLine(125,-80,125,-20)
+screen.drawLine(125,20,125,80)
+screen.drawLine(125,20,190,20)
+screen.drawLine(190,-20,125,-20)
+screen.drawLine(-125,20,-190,20)
+screen.drawLine(-190,-20,-125,-20)
+screen.drawLine(-190,-20,-190,20)
+screen.drawLine(190,20,190,-20)
+screen.drawLine(-190,20,-190,-20)
+screen.fillRect(180,0,19,40,"rgb(0,255,0)")
+screen.drawSprite("player",x,y,20,20)
+screen.drawSprite("enemy",e,f,30,30)
+screen.drawSprite("enemy",g,h,30,30)
+screen.drawSprite("enemy",g,-h,30,30)
+screen.drawSprite("enemy",e,-f,30,30)
+end
+//livello 8
+if livello==8 then
+  screen.clear("rgb(255,225,225)")
+  screen.fillRect(250,0,100,200,"rgb(0,255,0)")
+  screen.drawSprite("player",x,y,20,20)
+  screen.drawSprite("enemy2",-70,e,100,50)
+  screen.drawSprite("enemy2",40,f,100,50)
+  screen.drawSprite("enemy2",150,e,100,50)
+  
+  end
+
+//livello 9
+if livello==9 then
+screen.clear("rgb(225,225,225")
+
+screen.fillRect(150,130,10,200,"rgb(141,141,141)")
+screen.fillRect(150,-130,10,200,"rgb(141,141,141)")
+if c==0 then
+  screen.fillRect(150,0,10,60,"rgb(70,29,8)")
+  screen.fillRect(-185,0,20,20,"rgb(255,255,0)")
+end
+screen.fillRect(300,0,220,300,"rgb(0,255,0)")
+screen.drawSprite("player",x,y,20,20)
+screen.drawSprite("enemy",-50,e,40,40)
+screen.drawSprite("enemy",-100,f,40,40)
+screen.drawSprite("enemy",-150,e,40,40)
+screen.drawSprite("enemy",50,e,40,40)
+screen.drawSprite("enemy",100,f,40,40)
+  
+end
+
+//livello 10
+if livello==10 then
+  screen.clear("rgb(255,225,225)")
+  screen.fillRect(200,0,100,300,"rgb(0,255,0)")
+  screen.drawSprite("player",x,y,20,20)
+  screen.drawSprite("enemy2",-50,f,400,100)
+  screen.fillRect(-50,-100,400,20,"rgb(48,48,48)")
+  screen.fillRect(-300,0,250,200,"rgb(48,48,48)")
+  screen.fillRect(150,-20,10,200,"rgb(48,48,48)")
+  screen.fillRect(20,-40,260,10,"rgb(48,48,48)")
+  screen.fillRect(-50,40,260,10,"rgb(48,48,48)")
+  
+end
+
+//fine 
+if livello==11 then
+  screen.clear("rgb(255,255,255)")
+  screen.drawText("you won",0,0,60,"rgb(255,0,0)")
+  screen.drawText("in",-60,-40,20,0)
+  screen.drawText(morti,0,-40,20,0)
+  screen.drawText("tries",60,-40,20,0)
+  
+  end
+
+//comandi
+if menu==0 and selezioneLivello==0 and livello<11 then
+  screen.fillRect(-150,-30,30,30,"rgb(255,255,255)")
+  screen.fillRect(-150,-90,30,30,"rgb(255,255,255)")
+  screen.fillRect(-180,-60,30,30,"rgb(255,255,255)")
+  screen.fillRect(-120,-60,30,30,"rgb(255,255,255)")
+  screen.fillPolygon(-115,-60,-125,-50,-125,-70,-115,-60,"rgb(0,0,0)")
+  screen.fillPolygon(-185,-60,-175,-50,-175,-70,-185,-60,"rgb(0,0,0)")
+  screen.fillPolygon(-150,-25,-140,-35,-160,-35,-150,-25,"rgb(0,0,0)")
+  screen.fillPolygon(-150,-90,-140,-80,-160,-80,-150,-90,"rgb(0,0,0)")
+  screen.drawText("deaths:",-120,70,20,0)
+  screen.drawText(morti,-50,70,20,0)
+  end
+end
+end()
+
+
+</script></html>
